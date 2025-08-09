@@ -76,13 +76,10 @@ class MtsPaySectionTest {
         Assertions.assertTrue(detailsLink.getAttribute("href").contains(expectedHref),
                 "Некорректный URL ссылки");
 
-        // Сохраняем текущее окно
         String originalWindow = driver.getWindowHandle();
 
-        // Открываем ссылку в новой вкладке
         detailsLink.sendKeys(Keys.chord(Keys.CONTROL, Keys.RETURN));
 
-        // Переключаемся на новую вкладку
         wait.until(ExpectedConditions.numberOfWindowsToBe(2));
         for (String window : driver.getWindowHandles()) {
             if (!originalWindow.equals(window)) {
@@ -91,11 +88,9 @@ class MtsPaySectionTest {
             }
         }
 
-        // Проверяем URL
         Assertions.assertTrue(driver.getCurrentUrl().contains(expectedHref),
                 "Неверный URL после перехода");
 
-        // Закрываем вкладку и возвращаемся
         driver.close();
         driver.switchTo().window(originalWindow);
     }
@@ -103,25 +98,20 @@ class MtsPaySectionTest {
     @Test
     @Order(4)
     void testConnectionFormSubmission() {
-        // Переходим к форме
         WebElement form = driver.findElement(By.id("pay-connection"));
 
-        // Заполняем номер
         WebElement phoneInput = form.findElement(By.id("connection-phone"));
         phoneInput.clear();
         phoneInput.sendKeys("297777777");
 
-        // Заполняем сумму
         WebElement sumInput = form.findElement(By.id("connection-sum"));
         sumInput.clear();
         sumInput.sendKeys("350");
 
-        // Заполняем email
         WebElement emailInput = form.findElement(By.id("connection-email"));
         emailInput.clear();
         emailInput.sendKeys("test@mail.ru");
 
-        // Кликаем "Продолжить"
         WebElement submitButton = form.findElement(By.xpath(".//button[@type='submit']"));
         submitButton.click();
     }
@@ -140,7 +130,6 @@ class MtsPaySectionTest {
             ));
             acceptButton.click();
         } catch (TimeoutException e) {
-            // Куки-баннер не найден, продолжаем
         }
     }
 }
